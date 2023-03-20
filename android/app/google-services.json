@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "331098322948",
+    "project_id": "instagram-tutorial-c8d0c",
+    "storage_bucket": "instagram-tutorial-c8d0c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:331098322948:android:b9a7279fb0dfd068cf9d51",
+        "android_client_info": {
+          "package_name": "com.kevr.instagram_clone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "331098322948-r812mcmbpt67atv0tv0851gai9m84khh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoMI2xJ6r1L3ebpKLGeENXXAkcU5O4CCM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "331098322948-r812mcmbpt67atv0tv0851gai9m84khh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
