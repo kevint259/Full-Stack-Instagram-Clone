@@ -10,7 +10,7 @@ class TextFieldInput extends StatelessWidget {
   const TextFieldInput(
       {super.key,
       required this.textEditingController,
-      required this.isPass,
+      this.isPass = false,
       required this.hintText,
       required this.textInputType});
 
