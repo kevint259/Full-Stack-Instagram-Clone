@@ -81,10 +81,22 @@ class AuthMethods {
     try {
       if (email.isNotEmpty || password.isNotEmpty ) {
         await _auth.signInWithEmailAndPassword(email: email, password: password);
-        
+        res = "Success";
+      } else {
+        res = "Please enter all the fields";
       }
-    } catch (err) {
+    } on FirebaseAuthException catch (err) {
+      if (err.code == "wrong-password") {
+        res = "Incorrect Credentials";
+      } else if (err.code == 'invalid-email') {
+        res = "Invalid Email";
+      } else if (err.code == 'user-not-found') {
+        res = "User Not Found";
+      }
+    } 
+    catch (err) {
       res = err.toString();
     }
+    return res;
   } 
 }
