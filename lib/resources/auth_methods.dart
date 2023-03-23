@@ -22,13 +22,10 @@ class AuthMethods {
       if (email.isNotEmpty ||
           password.isNotEmpty ||
           username.isNotEmpty ||
-          bio.isNotEmpty ||
-          file != null) {
+          bio.isNotEmpty) {
         // register the user
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
-
-        print(cred.user!.uid);
 
         // add image to storage (firestore)
         String photoUrl = await StorageMethods()
