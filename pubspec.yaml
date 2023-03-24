@@ -25,6 +25,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   image_picker: ^0.8.7
+  provider: ^6.0.5
 flutter:
   uses-material-design: true
   # To add assets to your application, add an assets section, like this:
