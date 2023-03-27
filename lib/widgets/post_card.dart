@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/utils/colors.dart';
+import 'package:intl/intl.dart';
 
 class PostCard extends StatelessWidget {
-  const PostCard({super.key});
+  final snap;
+  const PostCard({super.key, required this.snap});
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +21,10 @@ class PostCard extends StatelessWidget {
             child: Row(
               children: [
                 // AVATAR
-                const CircleAvatar(
+                CircleAvatar(
                   radius: 16,
                   backgroundImage: NetworkImage(
-                      "https://static.wikia.nocookie.net/spongebob/images/1/17/Patrick_Star_Show_Patrick.png/revision/latest?cb=20220724110959"),
+                      snap['profImage']),
                 ),
                 Expanded(
                   child: Padding(
@@ -30,11 +32,11 @@ class PostCard extends StatelessWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         // username
                         Text(
-                          'username',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          snap['username'],
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         )
                       ],
                     ),
@@ -70,7 +72,7 @@ class PostCard extends StatelessWidget {
             height: MediaQuery.of(context).size.height * 0.35,
             width: double.infinity,
             child: Image.network(
-                'https://lp-cms-production.imgix.net/2019-06/f15f7b57ab31c217f471c6712a2654e0-taipei-101.jpg',
+                snap['postUrl'],
                 fit: BoxFit.cover),
           ),
           // LIKE COMMENT SECTION
@@ -120,41 +122,46 @@ class PostCard extends StatelessWidget {
                       .textTheme
                       .bodyLarge!
                       .copyWith(fontWeight: FontWeight.w600),
-                  child: const Text("1,231 likes"),
+                  child: Text('${snap['likes'].length} likes'),
                 ),
                 Container(
-            width: double.infinity,
-            padding: const EdgeInsets.only(top: 8),
-            child: RichText(
-              text: const TextSpan(
-                style: TextStyle(color: primaryColor),
-                children: [
-                  // username
-                  TextSpan(
-                    text: "username",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                  width: double.infinity,
+                  padding: const EdgeInsets.only(top: 8),
+                  child: RichText(
+                    text: TextSpan(
+                      style: const TextStyle(color: primaryColor),
+                      children: [
+                        // username
+                        TextSpan(
+                          text: snap['username'],
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        // description
+                        TextSpan(
+                          text: " ${snap['description']}",
+                        ),
+                      ],
+                    ),
                   ),
-                  // description
-                  TextSpan(
-                    text: " Hey this is some description to be replaced",
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: Container(
+                    alignment: Alignment.topLeft,
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: const Text(
+                      "View all 200 comments",
+                      style: TextStyle(fontSize: 16, color: secondaryColor),
+                    ),
                   ),
-                ],
-              ),
-            ),
-          ),
-          InkWell(
-            onTap: () {},
-            child: Container(
-              alignment: Alignment.topLeft,
-              padding: const EdgeInsets.symmetric(vertical: 4),
-                child: const Text("View all 200 comments",
-                    style: TextStyle(fontSize: 16, color: secondaryColor),),),
-          ),
-          Container(
-              alignment: Alignment.topLeft,
-              padding: const EdgeInsets.symmetric(vertical: 4),
-                child: const Text("22/12/2021",
-                    style: TextStyle(fontSize: 16, color: secondaryColor),),)
+                ),
+                Container(
+                  alignment: Alignment.topLeft,
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: Text(DateFormat.yMMMd().format(snap['datePublished'].toDate()),
+                    style: const TextStyle(fontSize: 16, color: secondaryColor),
+                  ),
+                )
               ],
             ),
           ),

@@ -162,7 +162,7 @@ packages:
     source: hosted
     version: "6.12.0"
   firebase_auth_web:
-    dependency: transitive
+    dependency: "direct dev"
     description:
       name: firebase_auth_web
       sha256: bf7f1a87995a58b0f07dc617806dabd7ff25c64be7fa47b41ab1bb9a485b0062
@@ -313,7 +313,7 @@ packages:
     source: hosted
     version: "2.6.3"
   intl:
-    dependency: transitive
+    dependency: "direct dev"
     description:
       name: intl
       sha256: "910f85bce16fb5c6f614e117efa303e85a1731bb0081edf3604a2ae6e9a3cc91"
