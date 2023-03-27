@@ -1,13 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/models/user.dart';
+import 'package:instagram_clone/providers/user_provider.dart';
+import 'package:instagram_clone/resources/firestore_methods.dart';
 import 'package:instagram_clone/utils/colors.dart';
+import 'package:instagram_clone/widgets/like_animation.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
-class PostCard extends StatelessWidget {
+class PostCard extends StatefulWidget {
   final snap;
   const PostCard({super.key, required this.snap});
 
   @override
+  State<PostCard> createState() => _PostCardState();
+}
+
+class _PostCardState extends State<PostCard> {
+  bool isLikeAnimating = false;
+
+  @override
   Widget build(BuildContext context) {
+    final User user = Provider.of<UserProvider>(context).getUser;
     return Container(
       color: mobileBackgroundColor,
       padding: const EdgeInsets.symmetric(vertical: 10),
@@ -23,8 +36,7 @@ class PostCard extends StatelessWidget {
                 // AVATAR
                 CircleAvatar(
                   radius: 16,
-                  backgroundImage: NetworkImage(
-                      snap['profImage']),
+                  backgroundImage: NetworkImage(widget.snap['profImage']),
                 ),
                 Expanded(
                   child: Padding(
@@ -35,7 +47,7 @@ class PostCard extends StatelessWidget {
                       children: [
                         // username
                         Text(
-                          snap['username'],
+                          widget.snap['username'],
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         )
                       ],
@@ -68,22 +80,62 @@ class PostCard extends StatelessWidget {
             ),
             // IMAGE SECTION
           ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.35,
-            width: double.infinity,
-            child: Image.network(
-                snap['postUrl'],
-                fit: BoxFit.cover),
+          GestureDetector(
+            onDoubleTap: () async {
+              await FirestoreMethods().likePost(
+                  widget.snap['postId'], user.uid, widget.snap['likes']);
+              setState(() {
+                isLikeAnimating = true;
+              });
+            },
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                // Image
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.35,
+                  width: double.infinity,
+                  child:
+                      Image.network(widget.snap['postUrl'], fit: BoxFit.cover),
+                ),
+                // Like Button
+                AnimatedOpacity(
+                  duration: const Duration(milliseconds: 200),
+                  opacity: isLikeAnimating ? 1 : 0,
+                  child: LikeAnimation(
+                    isAnimating: isLikeAnimating,
+                    duration: const Duration(milliseconds: 400),
+                    onEnd: () {
+                      setState(() {
+                        isLikeAnimating = false;
+                      });
+                    },
+                    child: const Icon(
+                      Icons.favorite,
+                      color: Colors.white,
+                      size: 120,
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
           // LIKE COMMENT SECTION
           Row(
             children: [
               // LIKE
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.favorite,
-                  color: Colors.red,
+              LikeAnimation(
+                isAnimating:
+                    widget.snap['likes'].contains(user.uid) ? true : false,
+                child: IconButton(
+                  onPressed: () async {
+                    await FirestoreMethods().likePost(
+                        widget.snap['postId'], user.uid, widget.snap['likes']);
+                  },
+                  icon: widget.snap['likes'].contains(user.uid) ? const Icon(
+                    Icons.favorite,
+                    color: Colors.red,
+                  ) : const Icon(Icons.favorite_border)
                 ),
               ),
               // COMMENT
@@ -122,7 +174,7 @@ class PostCard extends StatelessWidget {
                       .textTheme
                       .bodyLarge!
                       .copyWith(fontWeight: FontWeight.w600),
-                  child: Text('${snap['likes'].length} likes'),
+                  child: Text('${widget.snap['likes'].length} likes'),
                 ),
                 Container(
                   width: double.infinity,
@@ -133,12 +185,12 @@ class PostCard extends StatelessWidget {
                       children: [
                         // username
                         TextSpan(
-                          text: snap['username'],
+                          text: widget.snap['username'],
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         // description
                         TextSpan(
-                          text: " ${snap['description']}",
+                          text: " ${widget.snap['description']}",
                         ),
                       ],
                     ),
@@ -158,7 +210,9 @@ class PostCard extends StatelessWidget {
                 Container(
                   alignment: Alignment.topLeft,
                   padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: Text(DateFormat.yMMMd().format(snap['datePublished'].toDate()),
+                  child: Text(
+                    DateFormat.yMMMd()
+                        .format(widget.snap['datePublished'].toDate()),
                     style: const TextStyle(fontSize: 16, color: secondaryColor),
                   ),
                 )
