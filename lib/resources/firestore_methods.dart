@@ -86,6 +86,9 @@ class FirestoreMethods {
     }
   }
 
+  // Follow User
+  
+
 
 
 }
