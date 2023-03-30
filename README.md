@@ -12,7 +12,7 @@ This project is a clone to instagram and is written in Flutter and Firebase (Fir
 - & much more to be added!
 
 # Installation
-First, start by cloning the repository, then enter the Full-Stack-Instagram-Clone folder and run the following commands:
+First, start by cloning the repository, then enter the instagram-clone folder and run the following commands:
 ```bash
   flutter run
   flutter run -d chrome --web-renderer html (for web)
